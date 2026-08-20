@@ -1,0 +1,108 @@
+<view class="restaurant-detail">
+    <!-- 加载提示 -->
+    <view wx:if="{{loading}}" class="loading">
+        <text>加载中...</text>
+    </view>
+
+    <view wx:else>
+        <!-- 顶部背景图 -->
+        <view class="header">
+            <image src="{{headerBg}}" class="header-bg" />
+            <!--restaurantInfo?.banner ||-->
+            <view class="back-btn" bindtap="onBack">
+                <text>←</text>
+            </view>
+            <view class="action-btns">
+                <view class="action-btn" bindtap="onShare">
+                    <text>分享</text>
+                </view>
+                <view class="action-btn" bindtap="onFavorite">
+                    <text>收藏</text>
+                </view>
+            </view>
+        </view>
+
+        <!-- 餐厅基本信息 -->
+        <view class="info-section">
+            <view class="restaurant-logo-wrapper">
+                <image src="{{headerBg}}" class="restaurant-logo" />
+                <!--restaurantInfo?.logo ||-->
+            </view>
+            <view class="restaurant-basic">
+                <text class="restaurant-name">{{restaurantInfo.name}}</text>
+                <view class="rating-wrapper">
+                    <text class="rating">⭐ {{restaurantInfo.rating}}</text>
+                    <text class="price">人均 ¥{{restaurantInfo.avgPrice}}</text>
+                </view>
+                <view class="tags-wrapper">
+                    <text class="tag" wx:for="{{restaurantInfo.tags}}" wx:key="*this" wx:for-item="tag">{{tag}}</text>
+                    <!--{{restaurantInfo?.tags}}-->
+                </view>
+                <!-- <view class="address">
+          <text>📍{{restaurantInfo?.address || ''}}</text>
+        </view> -->
+            </view>
+        </view>
+
+        <!-- 营业状态 -->
+        <view class="status-section">
+            <view class="status-item">
+                <text class="status-label">营业状态</text>
+                <text class="status-value">{{restaurantInfo.open === '1' ? '营业中' : '已打烊'}}</text>
+            </view>
+            <view class="status-item">
+                <text class="status-label">营业时间</text>
+                <text class="status-value">{{restaurantInfo.businessHours || '10:00-22:00'}}</text>
+            </view>
+            <view class="status-item">
+                <text class="status-label">当前排队</text>
+                <text class="status-value queue-count">🟢 {{restaurantInfo.queueCount || 0}}桌</text>
+            </view>
+            <view class="status-item">
+                <text class="status-label">联系商家</text>
+                <text class="status-value queue-count">{{restaurantInfo.phone}}</text>
+            </view>
+        </view>
+
+        <!-- 餐厅描述 -->
+        <view class="desc-section">
+            <view class="section-title">餐厅介绍</view>
+            <text class="description">{{restaurantInfo.announcement || '暂无介绍'}}</text>
+        </view>
+
+        <!-- 推荐菜品 -->
+        <view class="menu-section">
+            <view class="section-title">推荐菜品</view>
+            <scroll-view scroll-x class="dish-scroll">
+                <view class="dish-list">
+                    <!-- 从menuItems获取的菜品数据 -->
+                    <view class="dish-item" wx:for="{{recommendedDishes}}" wx:key="_id">
+                        <!-- 图片用menuItems的image字段 -->
+                        <image src="{{item.image || '../../image/index/food.jpg'}}" class="dish-image" />
+                        <!-- 名称用menuItems的name字段 -->
+                        <text class="dish-name">{{item.name}}</text>
+                        <!-- 价格用menuItems的price字段 -->
+                        <text class="dish-price">¥{{item.price}}</text>
+                    </view>
+                    <!-- 无数据时的默认提示 -->
+                    <view wx:if="{{recommendedDishes.length === 0}}" class="dish-item">
+                        <image src="../../image/index/food.jpg" class="dish-image" />
+                        <text class="dish-name">暂无菜品</text>
+                        <text class="dish-price">--</text>
+                    </view>
+                </view>
+            </scroll-view>
+            <view class="view-menu-btn" bindtap="onViewMenu">
+                查看完整菜单 >
+            </view>
+        </view>
+        <!-- 底部操作栏 -->
+        <view class="bottom-bar">
+           
+            <view class="action-right">
+                <button class="action-btn primary" bindtap="onTakeNumber">立即取号</button>
+                <button class="action-btn secondary" bindtap="onReserve">预约座位</button>
+            </view>
+        </view>
+    </view>
+</view>

@@ -1,0 +1,79 @@
+<!--pages/register/register.wxml-->
+<view class="register-container">
+  <view class="register-header">
+    <text class="register-title">商家注册</text>
+    <text class="register-subtitle">请填写以下信息完成注册</text>
+  </view>
+
+  <view class="register-form">
+    <!-- 头像上传 -->
+    <view class="form-item">
+      <text class="form-label">头像</text>
+      <view class="avatar-upload">
+        <button class="avatar-btn" open-type="chooseAvatar" bindchooseavatar="onChooseAvatar">
+          <image wx:if="{{avatarUrl}}" class="avatar-img" src="{{avatarUrl}}" mode="aspectFill"></image>
+          <view wx:else class="avatar-placeholder">点击上传头像</view>
+        </button>
+      </view>
+    </view>
+
+    <!-- 昵称输入 -->
+    <view class="form-item">
+      <text class="form-label">昵称</text>
+      <input type="nickname" class="form-input" placeholder="请输入商家昵称" bindinput="onNicknameInput" value="{{nickname}}"/>
+    </view>
+
+    <!-- 店铺头像 -->
+    <view class="form-item">
+      <text class="form-label">店铺头像</text>
+      <view class="shop-avatar-upload">
+        <button class="shop-avatar-btn" bindtap="chooseShopAvatar">
+          <image wx:if="{{shopAvatarUrl}}" class="shop-avatar-img" src="{{shopAvatarUrl}}" mode="aspectFill"></image>
+          <view wx:else class="shop-avatar-placeholder">点击上传店铺头像</view>
+        </button>
+      </view>
+    </view>
+
+    <!-- 店铺名称 -->
+    <view class="form-item">
+      <text class="form-label">店铺名称</text>
+      <input type="text" class="form-input" placeholder="请输入店铺名称" bindinput="onShopNameInput" value="{{shopName}}"/>
+    </view>
+
+    <!-- 店铺描述 -->
+    <view class="form-item">
+      <text class="form-label">店铺描述</text>
+      <textarea class="form-textarea" placeholder="请简要描述您的店铺特色" bindinput="onShopDescInput" value="{{shopDescription}}"/>
+    </view>
+
+    <!-- 联系方式 -->
+    <view class="form-item">
+      <text class="form-label">联系方式</text>
+      <input type="number" class="form-input" placeholder="请输入手机号" bindinput="onPhoneInput" value="{{phone}}"/>
+    </view>
+
+    <!-- 营业执照上传 -->
+    <view class="form-item">
+      <text class="form-label">营业执照</text>
+      <view class="license-upload">
+        <button class="license-btn" bindtap="onChooseLicense">
+          <image wx:if="{{licenseUrl}}" class="license-img" src="{{licenseUrl}}" mode="aspectFill"></image>
+          <view wx:else class="license-placeholder">点击上传营业执照</view>
+        </button>
+        <text class="upload-tip">请上传清晰的营业执照照片</text>
+      </view>
+    </view>
+
+    <!-- 提交按钮 -->
+    <button class="submit-btn" bindtap="onSubmit">提交申请</button>
+  </view>
+</view>
+
+<!-- 提示弹窗 -->
+<view class="modal" wx:if="{{showModal}}">
+  <view class="modal-content">
+    <text class="modal-title">{{modalTitle}}</text>
+    <text class="modal-message">{{modalMessage}}</text>
+    <button class="modal-btn" bindtap="closeModal">{{modalButtonText}}</button>
+  </view>
+</view>

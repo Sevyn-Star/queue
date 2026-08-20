@@ -1,0 +1,88 @@
+<!--pages/myhome/myhome.wxml-->
+<view class="container">
+  <!-- 顶部个人信息区 -->
+  <view class="user-info-section">
+    <view wx:if="{{!userInfo}}" class="login-prompt">
+      <view class="login-content">
+        <image class="login-avatar" src="../../image/my/login.png" mode="aspectFill"></image>
+        <view class="login-text">请先登录以使用更多功能</view>
+        <button class="login-btn primary" bind:tap="goLogin">授权登录</button>
+      </view>
+    </view>
+    <view wx:if="{{userInfo&&userInfo.nickName}}" class="user-content">
+      <view class="avatar-container" bindtap="changeAvatar">
+        <image class="user-avatar" src="{{userInfo.avatarUrl || '../../image/my/collect.png'}}" mode="aspectFill"></image>
+        <view class="avatar-edit-icon">✏️</view>
+      </view>
+      <view class="user-details">
+        <view class="nickname" bindtap="modifyNickName">{{userInfo.nickName || '美食达人'}}</view>
+        <view class="level-info">
+          <text class="level-badge">{{userInfo.roleLabel || userInfo.level || '普通会员'}}</text>
+          <text class="points-text">{{userInfo.points || 0}}/{{userInfo.upgradePoints || 500}} 积分</text>
+        </view>
+      </view>
+      <view class="user-actions">
+        <view class="settings-btn" bindtap="goToSettings">
+          <image class="settings-icon" src="../../image/my/collect.png" mode="aspectFit"></image>
+        </view>
+        <view class="logout-btn" bind:tap="loginOut">
+          <text class="logout-text">退出</text>
+        </view>
+      </view>
+    </view>
+  </view>
+  <!-- 弹窗 -->
+  <view class="pop_root" hidden="{{isHidden}}">
+    <view class="pop_content">
+      <view class="pop_tip">授权登录弹窗</view>
+      <button class="pop_avatar" open-type="chooseAvatar" bindchooseavatar="chooseAvatar">
+        <image class="pop_img" wx:if="{{avatarUrl}}" src="{{avatarUrl}}"/>
+        <view class="pop_touxiang iconfont icon-denglu-weixindenglu" wx:else>获取头像</view>
+      </button>
+      <input type="nickname" class="pop_name" bindblur="getName" placeholder="获取昵称"/>
+      <view class="admin-password">
+        <view>管理员口令（选填）：</view>
+        <input type="password" class="pop_password" bindblur="getAdminPassword" placeholder="仅预设管理员填写"/>
+      </view>
+      <view class="pop_bot">
+        <view class="btn" bind:tap="potNo">取消</view>
+        <view class="btn log_btn" bind:tap="potYes">确定</view>
+      </view>
+    </view>
+  </view>
+  <!-- 功能入口区 -->
+  <view class="features-section">
+    <view class="section-title">功能中心</view>
+    <view class="feature-grid">
+      <view wx:for="{{features}}" wx:key="id" class="feature-item" bindtap="goToFeaturePage" data-id="{{item.id}}" style="--feature-color: {{item.color}};">
+        <view class="feature-icon">
+          <image src="{{item.icon}}" mode="aspectFit"></image>
+        </view>
+        <text class="feature-name">{{item.name}}</text>
+      </view>
+    </view>
+  </view>
+  <view class="phone-modal-overlay" wx:if="{{showFeedback}}" bindtap="closeFeedback">
+    <view class="phone-modal" catchtap="">
+      <view class="modal-header">
+        <text class="modal-title">意见反馈</text>
+        <text class="modal-close" bindtap="closeFeedback">×</text>
+      </view>
+      <view class="modal-content">
+        <textarea class="feedback-input" placeholder="请输入您的意见或建议" maxlength="200" bindinput="onFeedbackInput" value="{{feedbackText}}"></textarea>
+        <button class="confirm-login-btn" bindtap="submitFeedback">提交</button>
+      </view>
+    </view>
+  </view>
+  <!-- 底部辅助区 -->
+  <view class="footer-section">
+    <view class="footer-links">
+      <text class="footer-link" bindtap="navigateToH5" data-type="about">关于我们</text>
+      <text class="divider">|</text>
+      <text class="footer-link" bindtap="navigateToH5" data-type="agreement">用户协议</text>
+      <text class="divider">|</text>
+      <text class="footer-link" bindtap="navigateToH5" data-type="privacy">隐私政策</text>
+    </view>
+    <text class="version-info">{{version}}</text>
+  </view>
+</view>

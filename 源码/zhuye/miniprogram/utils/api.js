@@ -1,0 +1,51 @@
+const { get, post, put, del, uploadFile, baseUrl } = require('./request');
+
+module.exports = {
+  baseUrl,
+  uploadFile,
+
+  login: (data) => post('/api/auth/login', data),
+  getMe: () => get('/api/auth/me'),
+
+  getRestaurants: () => get('/api/restaurants'),
+  getRestaurant: (id) => get('/api/restaurants/' + id),
+  getRestaurantMenu: (id) => get('/api/restaurants/' + id + '/menu'),
+  searchRestaurants: (q) => get('/api/search', { q }),
+  getAnnouncements: () => get('/api/announcements'),
+  getAnnouncement: (id) => get('/api/announcements/' + id),
+
+  getQueueProgress: (restaurantId) => get('/api/queue/progress/' + restaurantId),
+  getMyTickets: () => get('/api/queue/mine'),
+  createTicket: (data) => post('/api/queue', data),
+  cancelTicket: (id) => put('/api/queue/' + id + '/cancel'),
+  arriveTicket: (id) => put('/api/queue/' + id + '/arrive'),
+  deleteTicket: (id) => del('/api/queue/' + id),
+  submitOrder: (data) => post('/api/orders', data),
+  getMyOrders: () => get('/api/orders/mine'),
+
+  getMerchantStatus: () => get('/api/merchant/status'),
+  submitMerchantApply: (data) => post('/api/merchant/apply', data),
+  getMerchantRestaurant: () => get('/api/merchant/restaurant'),
+  updateMerchantRestaurant: (data) => put('/api/merchant/restaurant', data),
+  getMerchantQueue: () => get('/api/merchant/queue'),
+  clearMerchantQueue: () => del('/api/merchant/queue'),
+  callNext: (data) => post('/api/merchant/queue/call-next', data),
+  updateQueueStatus: (id, status) => put('/api/merchant/queue/' + id + '/status', { status }),
+  getMerchantOrders: (status) => get('/api/merchant/orders', status ? { status } : {}),
+  clearCompletedOrders: () => del('/api/merchant/orders/completed'),
+  getMerchantDishes: () => get('/api/merchant/dishes'),
+  getPendingDishes: () => get('/api/merchant/pending-dishes'),
+  createDish: (data) => post('/api/merchant/dishes', data),
+  updateDish: (id, data) => put('/api/merchant/dishes/' + id, data),
+  deleteDish: (id) => del('/api/merchant/dishes/' + id),
+  getMerchantStats: (filter) => get('/api/merchant/stats', { filter }),
+
+  getAdminOverview: () => get('/api/admin/overview'),
+  getApplies: () => get('/api/admin/applies'),
+  approveApply: (id) => post('/api/admin/applies/' + id + '/approve'),
+  rejectApply: (id) => post('/api/admin/applies/' + id + '/reject'),
+  getAdminAnnouncements: () => get('/api/admin/announcements'),
+  createAnnouncement: (data) => post('/api/admin/announcements', data),
+  updateAnnouncement: (id, data) => put('/api/admin/announcements/' + id, data),
+  deleteAnnouncement: (id) => del('/api/admin/announcements/' + id),
+};

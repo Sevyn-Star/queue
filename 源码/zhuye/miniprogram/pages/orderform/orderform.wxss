@@ -1,0 +1,458 @@
+.page {
+	background: #f6f1ea;
+	min-height: 100vh;
+	padding-bottom: 40rpx;
+}
+
+.search-bar {
+	padding: 12rpx 28rpx 8rpx;
+}
+
+.tabs {
+	display: flex;
+	margin: 8rpx 28rpx 0;
+	background: #fff;
+	border-bottom: none;
+	border-radius: 999rpx;
+	padding: 8rpx;
+	box-shadow: 0 8rpx 24rpx rgba(43, 33, 24, 0.05);
+}
+
+.tab {
+	flex: 1;
+	text-align: center;
+	padding: 18rpx 0;
+	font-size: 26rpx;
+	color: #8a7d72;
+	position: relative;
+	border-radius: 999rpx;
+	transition: color 0.2s ease, background 0.2s ease;
+}
+
+.tab.active {
+	color: #fff;
+	font-weight: 700;
+	background: #ff6b35;
+}
+
+.tab.active::after {
+	display: none;
+}
+
+.content {
+	padding: 24rpx 28rpx;
+}
+
+.warning-tip {
+	padding: 18rpx 24rpx;
+	background-color: #fff7e8;
+	border-radius: 16rpx;
+	margin-bottom: 20rpx;
+}
+
+.tip-text {
+	font-size: 24rpx;
+	color: #c27820;
+}
+
+.section {
+	background: #fff;
+	border-radius: 24rpx;
+	padding: 28rpx;
+	margin-bottom: 20rpx;
+	box-shadow: 0 8rpx 24rpx rgba(43, 33, 24, 0.05);
+}
+
+.section-title {
+	font-size: 30rpx;
+	font-weight: 700;
+	color: #2b2118;
+	margin-bottom: 16rpx;
+}
+
+.picker-item {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	padding: 20rpx 0 8rpx;
+	border-bottom: 1rpx solid #efe7df;
+}
+
+.picker-text {
+	font-size: 28rpx;
+	color: #2b2118;
+}
+
+.picker-arrow {
+	font-size: 24rpx;
+	color: #c4b8ae;
+}
+
+.party-size {
+	display: flex;
+	align-items: center;
+	margin-top: 8rpx;
+}
+
+.party-size-text {
+	margin-left: 12rpx;
+	font-size: 28rpx;
+	color: #ff6b35;
+	font-weight: 600;
+}
+
+.restaurant-info {
+	margin: 16rpx 0;
+}
+
+.restaurant-card {
+	display: flex;
+	background: #fff1ea;
+	border: none;
+	border-radius: 24rpx;
+	padding: 20rpx;
+}
+
+.restaurant-logo {
+	width: 120rpx;
+	height: 120rpx;
+	border-radius: 20rpx;
+	margin-right: 20rpx;
+}
+
+.restaurant-details {
+	flex: 1;
+}
+
+.restaurant-name {
+	font-size: 30rpx;
+	font-weight: 700;
+	color: #2b2118;
+	margin-bottom: 10rpx;
+}
+
+.restaurant-meta {
+	display: flex;
+	align-items: center;
+	margin-bottom: 6rpx;
+}
+
+.restaurant-meta text {
+	font-size: 22rpx;
+	margin-right: 16rpx;
+}
+
+.rating,
+.queue-count {
+	color: #ff6b35;
+}
+
+.price,
+.wait-time {
+	color: #8a7d72;
+	font-size: 22rpx;
+}
+
+.action-btn,
+.order-btn {
+	width: 100%;
+	height: 88rpx;
+	background: linear-gradient(135deg, #ff7a45, #ff6b35);
+	color: #fff;
+	border-radius: 999rpx;
+	font-size: 30rpx;
+	font-weight: 700;
+	margin-top: 24rpx;
+	line-height: 88rpx;
+	box-shadow: 0 12rpx 28rpx rgba(255, 107, 53, 0.28);
+}
+
+.action-btn[disabled] {
+	background: #d9d0c8;
+	box-shadow: none;
+	color: #fff;
+}
+
+.ticket-card {
+	background: #fff;
+	border-radius: 24rpx;
+	padding: 28rpx;
+	margin-bottom: 20rpx;
+	box-shadow: 0 8rpx 24rpx rgba(43, 33, 24, 0.05);
+}
+
+.ticket-header {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	margin-bottom: 20rpx;
+}
+
+.ticket-header .restaurant-name {
+	font-size: 30rpx;
+	font-weight: 700;
+	color: #2b2118;
+}
+
+.status {
+	font-size: 22rpx;
+	padding: 6rpx 16rpx;
+	border-radius: 999rpx;
+}
+
+.status.waiting {
+	background: #fff1ea;
+	color: #ff6b35;
+}
+
+.status.reserved {
+	background: #eef6ff;
+	color: #2f7de1;
+}
+
+.status.arrived {
+	background: #eef8e8;
+	color: #3d9a3a;
+}
+
+.status.overdue,
+.status.expired {
+	background: #ffecec;
+	color: #e55353;
+}
+
+.queue-info {
+	display: flex;
+	justify-content: space-between;
+	margin-bottom: 16rpx;
+}
+
+.queue-number, .queue-progress, .queue-eta {
+	text-align: center;
+}
+
+.number-label, .progress-label, .eta-label {
+	display: block;
+	font-size: 22rpx;
+	color: #8a7d72;
+	margin-bottom: 6rpx;
+}
+
+.number-value {
+	font-size: 40rpx;
+	font-weight: 700;
+	color: #ff6b35;
+}
+
+.progress-value {
+	font-size: 30rpx;
+	font-weight: 700;
+	color: #2b2118;
+}
+
+.eta-value {
+	font-size: 26rpx;
+	color: #8a7d72;
+}
+
+.reserve-info {
+	margin-bottom: 16rpx;
+}
+
+.reserve-time {
+	text-align: center;
+}
+
+.time-label {
+	display: block;
+	font-size: 22rpx;
+	color: #8a7d72;
+	margin-bottom: 6rpx;
+}
+
+.time-value {
+	padding-top: 8rpx;
+	font-size: 30rpx;
+	font-weight: 700;
+	color: #2f7de1;
+}
+
+.ticket-meta {
+	display: flex;
+	justify-content: space-between;
+	font-size: 22rpx;
+	color: #8a7d72;
+	margin-bottom: 16rpx;
+}
+
+.ticket-actions {
+	display: flex;
+	justify-content: flex-end;
+	gap: 12rpx;
+}
+
+.menu-section {
+	margin-top: 8rpx;
+}
+
+.menu-list {
+	background: #fff;
+	border-radius: 24rpx;
+	overflow: hidden;
+}
+
+.menu-item {
+	display: flex;
+	align-items: center;
+	padding: 24rpx;
+	border-bottom: 1rpx solid #efe7df;
+}
+
+.menu-image {
+	width: 120rpx;
+	height: 120rpx;
+	border-radius: 20rpx;
+	margin-right: 20rpx;
+}
+
+.menu-info {
+	flex: 1;
+}
+
+.menu-name {
+	font-size: 30rpx;
+	font-weight: 700;
+	color: #2b2118;
+	margin-bottom: 6rpx;
+}
+
+.menu-desc {
+	font-size: 22rpx;
+	color: #8a7d72;
+	margin-bottom: 6rpx;
+}
+
+.menu-price {
+	font-size: 28rpx;
+	color: #ff6b35;
+	font-weight: 700;
+}
+
+.menu-actions {
+	display: flex;
+	align-items: center;
+	gap: 12rpx;
+}
+
+.quantity {
+	font-size: 28rpx;
+	color: #2b2118;
+	min-width: 36rpx;
+	text-align: center;
+}
+
+.cart-section {
+	margin-top: 16rpx;
+}
+
+.cart-list {
+	background: #fff;
+	border-radius: 24rpx;
+	padding: 24rpx;
+	margin-bottom: 16rpx;
+}
+
+.cart-item {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	padding: 12rpx 0;
+	border-bottom: 1rpx solid #efe7df;
+}
+
+.cart-name {
+	flex: 1;
+	font-size: 28rpx;
+	color: #2b2118;
+}
+
+.cart-quantity {
+	font-size: 22rpx;
+	color: #8a7d72;
+	margin: 0 12rpx;
+}
+
+.cart-price,
+.total-price {
+	font-size: 28rpx;
+	color: #ff6b35;
+	font-weight: 700;
+}
+
+.cart-total {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	padding: 16rpx 0 0;
+	border-top: 1rpx solid #efe7df;
+	margin-top: 8rpx;
+}
+
+.total-label {
+	font-size: 28rpx;
+	font-weight: 700;
+	color: #2b2118;
+}
+
+.empty-state {
+	text-align: center;
+	padding: 80rpx 20rpx;
+}
+
+.empty-icon {
+	font-size: 72rpx;
+	margin-bottom: 16rpx;
+}
+
+.empty-text {
+	display: block;
+	font-size: 28rpx;
+	color: #8a7d72;
+	margin-bottom: 24rpx;
+}
+
+.order-items {
+	padding: 16rpx 20rpx;
+	background-color: #faf6f1;
+	border-radius: 16rpx;
+	margin: 12rpx 0;
+}
+
+.order-label {
+	font-weight: 700;
+	display: block;
+	margin-bottom: 8rpx;
+}
+
+.items-list {
+	border-top: 1rpx solid #efe7df;
+	padding-top: 8rpx;
+}
+
+.item-row {
+	display: flex;
+	justify-content: space-between;
+	margin: 8rpx 0;
+	font-size: 24rpx;
+}
+
+.item-name {
+	color: #2b2118;
+}
+
+.order-total {
+	display: flex;
+	justify-content: flex-end;
+	margin-top: 10rpx;
+	font-weight: 700;
+}

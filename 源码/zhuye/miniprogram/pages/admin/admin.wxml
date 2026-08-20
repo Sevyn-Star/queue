@@ -1,0 +1,226 @@
+<view class="page">
+    <!-- 顶部管理员信息 -->
+    <view class="header">
+        <view class="admin-info">
+            <text class="admin-name">管理员</text>
+            <text class="admin-role">超级管理员</text>
+        </view>
+        <!-- <view class="header-actions">
+            <view class="action-btn" bindtap="onExportData">
+                <text class="action-icon">📊</text>
+                <text class="action-text">导出</text>
+            </view>
+        </view> -->
+    </view>
+
+    <!-- Tab导航 -->
+    <view class="tabs">
+        <view class="tab {{activeTab==='dashboard'?'active':''}}" data-key="dashboard" bindtap="onTabChange">
+            <text>概览</text>
+        </view>
+        <view class="tab {{activeTab==='merchants'?'active':''}}" data-key="merchants" bindtap="onTabChange">
+            <text>商家</text>
+        </view>
+        <view class="tab {{activeTab==='system'?'active':''}}" data-key="system" bindtap="onTabChange">
+            <text>系统</text>
+        </view>
+        <!-- <view class="tab {{activeTab==='data'?'active':''}}" data-key="data" bindtap="onTabChange">
+            <text>数据</text>
+        </view> -->
+    </view>
+
+    <!-- 数据概览 -->
+    <view wx:if="{{activeTab==='dashboard'}}" class="content">
+        <view class="overview-grid">
+            <view class="overview-card">
+                <text class="overview-value">{{overview.totalUsers}}</text>
+                <text class="overview-label">总用户数</text>
+            </view>
+            <view class="overview-card">
+                <text class="overview-value">{{overview.totalMerchants}}</text>
+                <text class="overview-label">入驻商家</text>
+            </view>
+            <view class="overview-card">
+                <text class="overview-value">{{overview.todayOrders}}</text>
+                <text class="overview-label">今日订单</text>
+            </view>
+            <view class="overview-card">
+                <text class="overview-value">¥{{overview.totalRevenue}}</text>
+                <text class="overview-label">今日交易额</text>
+            </view>
+        </view>
+
+        <view class="section">
+            <view class="section-header">
+                <view class="section-title">今日热门商家</view>
+                <view class="date-indicator">
+                    <text class="today-text">{{todayDate}}</text>
+                    <text class="refresh-hint">↓ 下拉刷新</text>
+                </view>
+            </view>
+            <view class="merchant-rank">
+                <block wx:for="{{stats.topMerchants}}" wx:key="id">
+                    <view class="rank-item">
+                        <text class="rank {{index < 3 ? 'top-' + (index + 1) : ''}}">{{index + 1}}</text>
+                        <text class="merchant-name">{{item.name}}</text>
+                        <text class="merchant-orders">{{item.orders}}单</text>
+                        <text class="merchant-revenue">¥{{item.revenue}}</text>
+                    </view>
+                </block>
+                <view wx:if="{{stats.topMerchants.length === 0}}" class="empty-merchants">
+                    <text class="empty-text">今日暂无订单</text>
+                    <text class="empty-hint">今日商家订单将显示在这里</text>
+                </view>
+            </view>
+        </view>
+    </view>
+
+    <!-- 店铺与菜式申请管理 -->
+    <view wx:if="{{activeTab==='merchants'}}" class="content">
+        <view class="section-title" style="margin-bottom: 8px;">申请管理说明</view>
+        <view class="comment-notice" style="background: #e6f7ff; padding: 12px; border-radius: 8px; font-size: 12px; color: #666; margin-bottom: 16px;">
+            <text>• 店铺申请需审核商家资质、经营内容等信息</text>
+            <text style="display: block; margin-top: 4px;">• 菜式申请需审核菜品信息、价格、图片等内容</text>
+        </view>
+
+        <view class="filter-bar">
+            <view class="filter-item {{merchantFilter==='shopApply'?'active':''}}" data-filter="shopApply" bindtap="onMerchantFilterChange">店铺申请</view>
+            <view class="filter-item {{merchantFilter==='dishApply'?'active':''}}" data-filter="dishApply" bindtap="onMerchantFilterChange">菜式申请</view>
+            <view class="filter-item {{merchantFilter==='approved'?'active':''}}" data-filter="approved" bindtap="onMerchantFilterChange">已通过</view>
+            <view class="filter-item {{merchantFilter==='rejected'?'active':''}}" data-filter="rejected" bindtap="onMerchantFilterChange">已驳回</view>
+        </view>
+
+        <view class="merchant-list">
+            <block wx:for="{{filteredApplications}}" wx:key="_id">
+                <view class="merchant-item {{item.auditStatus === 0 ? 'pending' : item.auditStatus === 1 ? 'approved' : 'rejected'}}">
+                    <view class="status-tag {{item.auditStatus === 0 ? 'pending' : item.auditStatus === 1 ? 'approved' : 'rejected'}}">
+                        {{item.auditStatus === 0 ? '待审核' : item.auditStatus === 1 ? '已通过' : '已驳回'}}
+                    </view>
+
+                    <view class="application-type">
+                        <text class="type-tag {{item.type === 'shop' ? 'shop' : 'dish'}}">{{item.type === 'shop' ? '店铺申请' : '菜式申请'}}</text>
+                    </view>
+
+                    <view class="merchant-info" wx:if="{{item.type === 'shop'}}">
+                        <text class="merchant-name">{{item.shopName || item.name}}</text>
+                        <view class="merchant-detail">
+                            <text class="detail-label">联系电话：</text>
+                            <text class="detail-value">{{item.phone}}</text>
+                        </view>
+                        <view class="merchant-detail">
+                            <text class="detail-label">申请时间：</text>
+                            <text class="detail-value">{{item.applyTime}}</text>
+                        </view>
+                        <view class="merchant-detail">
+                            <text class="detail-label">店铺描述：</text>
+                            <text class="detail-value">{{item.description || '暂无描述'}}</text>
+                        </view>
+
+                        <!-- 优化：店铺Logo和营业执照显示（带预览） -->
+                        <view class="merchant-media" wx:if="{{item.logo || item.businessLicense}}">
+                            <!-- 店铺Logo -->
+                            <view class="media-item" wx:if="{{item.logo}}">
+                                <text class="media-label">店铺Logo</text>
+                                <image src="{{item.logo}}" mode="aspectFill" class="media-image" bindtap="previewImage" data-url="{{item.logo}}"></image>
+                            </view>
+                            <!-- 营业执照 -->
+                            <view class="media-item" wx:if="{{item.businessLicense}}">
+                                <text class="media-label">营业执照</text>
+                                <image src="{{item.businessLicense}}" mode="aspectFill" class="media-image" bindtap="previewImage" data-url="{{item.businessLicense}}"></image>
+                            </view>
+                        </view>
+                    </view>
+
+                    <view class="merchant-info" wx:elif="{{item.type === 'dish'}}">
+                        <text class="merchant-name">菜名：{{item.dishName}}</text>
+                        <view class="merchant-detail">
+                            <text class="detail-label">所属店铺：</text>
+                            <text class="detail-value">{{item.shopName}}</text>
+                        </view>
+                        <view class="merchant-detail">
+                            <text class="detail-label">菜品分类：</text>
+                            <text class="detail-value">{{item.dishCategory}}</text>
+                        </view>
+                        <view class="merchant-detail">
+                            <text class="detail-label">价格：</text>
+                            <text class="detail-value">¥{{item.price}}</text>
+                        </view>
+                        <view class="merchant-detail">
+                            <text class="detail-label">描述：</text>
+                            <text class="detail-value">{{item.description || '暂无描述'}}</text>
+                        </view>
+                        <view class="merchant-detail">
+                            <text class="detail-label">申请时间：</text>
+                            <text class="detail-value">{{item.applyTime}}</text>
+                        </view>
+
+                        <!-- 优化：菜式图片显示（带预览） -->
+                        <view class="merchant-media" wx:if="{{item.dishImage || item.image}}">
+                            <view class="media-item">
+                                <text class="media-label">菜品图片</text>
+                                <image src="{{item.dishImage || item.image}}" mode="aspectFill" class="media-image" bindtap="previewImage" data-url="{{item.dishImage || item.image}}"></image>
+                            </view>
+                        </view>
+                    </view>
+
+                    <view class="merchant-actions" wx:if="{{item.auditStatus === 0}}">
+                        <button size="mini" type="primary" bindtap="onApproveMerchant" data-id="{{item._id}}">通过</button>
+                        <button size="mini" type="warn" bindtap="onRejectMerchant" data-id="{{item._id}}">驳回</button>
+                    </view>
+                </view>
+            </block>
+            <view wx:if="{{filteredApplications.length === 0}}" class="empty-state">
+                <text class="empty-text">暂无申请</text>
+                <text class="empty-hint">相关申请会显示在这里</text>
+            </view>
+        </view>
+    </view>
+
+    <!-- 系统管理 -->
+    <view wx:if="{{activeTab==='system'}}" class="content">
+        <view class="system-actions">
+            <button class="create-btn" bindtap="onCreateAnnouncement">发布公告</button>
+        </view>
+
+        <view class="announcement-list">
+            <block wx:for="{{announcements}}" wx:key="id">
+                <view class="announcement-item">
+                    <view class="announcement-header">
+                        <text class="announcement-title">{{item.title}}</text>
+                        <text class="announcement-status {{item.status}}">
+                            {{item.status==='published'?'已发布':'草稿'}}
+                        </text>
+                    </view>
+                    <view class="announcement-content">{{item.content}}</view>
+                    <view class="announcement-meta">
+                        <text class="announcement-time">{{item.createTime}}</text>
+                    </view>
+                    <view class="announcement-actions">
+                        <button wx:if="{{item.status==='draft'}}" size="mini" type="primary" bindtap="onPublishAnnouncement" data-id="{{item.id}}">发布</button>
+                        <button size="mini" bindtap="onEditAnnouncement" data-id="{{item.id}}">编辑</button>
+                        <button size="mini" type="warn" bindtap="onDeleteAnnouncement" data-id="{{item.id}}">删除</button>
+                    </view>
+                </view>
+            </block>
+        </view>
+    </view>
+
+    <!-- 数据监控 -->
+    <view wx:if="{{activeTab==='data'}}" class="content">
+        <view class="data-filter">
+            <view class="filter-item {{dataFilter === 'twoMonthsAgo' ? 'active' : ''}}" data-filter="twoMonthsAgo" bindtap="onStatsFilterChange">上上月</view>
+            <view class="filter-item {{dataFilter === 'lastMonth' ? 'active' : ''}}" data-filter="lastMonth" bindtap="onStatsFilterChange">上月</view>
+            <view class="filter-item {{dataFilter === 'thisMonth' ? 'active' : ''}}" data-filter="thisMonth" bindtap="onStatsFilterChange">本月</view>
+        </view>
+
+        <view class="chart-section">
+            <view class="chart-title">用户增长趋势</view>
+            <canvas canvas-id="userGrowthChart" style="width: 100%; height: 200px;"></canvas>
+        </view>
+
+        <view class="chart-section">
+            <view class="chart-title">订单趋势图</view>
+            <canvas canvas-id="orderStatsChart" style="width: 100%; height: 200px;"></canvas>
+        </view>
+    </view>
+</view>

@@ -1,0 +1,314 @@
+<view class="page">
+    <!-- 顶部店铺信息（从merchantInfo读取，无数据则显示空） -->
+    <view class="header">
+        <view class="shop-info">
+            <!-- 店铺logo：优先显示merchantInfo.logo，无则显示默认图 -->
+            <image src="{{merchantInfo.logo}}" class="shop-logo" />
+            <view class="shop-details">
+                <!-- 店铺名称：无数据则显示"未设置" -->
+                <text class="shop-name">{{merchantInfo.name || '未设置'}}</text>
+                <!-- 动态显示营业状态，暂停时文字变红色 -->
+                <text class="shop-status {{merchantInfo.open === '0' ? 'paused' : ''}}">
+                    {{merchantInfo.open === '1' ? '营业中' : '已暂停'}}
+                </text>
+            </view>
+        </view>
+        <view class="header-actions">
+            <view class="action-btn" bindtap="onToggleOpenStatus">
+                <!-- 动态显示图标：open为1显示⏸️，为0显示▶️ -->
+                <text class="action-icon">{{merchantInfo.open === '1' ? '⏸️' : '▶️'}}</text>
+                <!-- 动态显示文字：open为1显示"暂停"，为0显示"营业"，暂停时文字变红色 -->
+                <text class="action-text {{merchantInfo.open === '0' ? 'paused-text' : ''}}">
+                    {{merchantInfo.open === '1' ? '暂停' : '营业'}}
+                </text>
+            </view>
+        </view>
+    </view>
+
+    <!-- Tab导航 -->
+    <view class="tabs">
+        <view class="tab {{activeTab==='home'?'active':''}}" data-key="home" bindtap="onTabChange">
+            <text>首页</text>
+        </view>
+        <view class="tab {{activeTab==='queue'?'active':''}}" data-key="queue" bindtap="onTabChange">
+            <text>排队</text>
+        </view>
+        <view class="tab {{activeTab==='orders'?'active':''}}" data-key="orders" bindtap="onTabChange">
+            <text>预约</text>
+        </view>
+        <view class="tab {{activeTab==='dishes'?'active':''}}" data-key="dishes" bindtap="onTabChange">
+            <text>菜品</text>
+        </view>
+        <view class="tab {{activeTab==='data'?'active':''}}" data-key="data" bindtap="onTabChange">
+            <text>数据</text>
+        </view>
+    </view>
+
+    <!-- 首页概览（独立content，不嵌套其他Tab） -->
+    <view wx:if="{{activeTab==='home'}}" class="content">
+        <view class="stats-grid">
+            <view class="stat-card">
+                <text class="stat-value">{{queue.length}}</text>
+                <text class="stat-label">当前排队</text>
+            </view>
+            <view class="stat-card">
+                <text class="stat-value">¥{{todayRevenue}}</text>
+                <text class="stat-label">今日营收</text>
+            </view>
+        </view>
+
+        <view class="section">
+            <view class="section-title">店铺管理</view>
+            <!-- 表单数据来源改为merchantInfo -->
+            <view class="form-item">
+                <text class="label">店铺名称</text>
+                <input value="{{merchantInfo.name || ''}}" bindinput="onShopNameChange" placeholder="请输入店铺名称" />
+            </view>
+            <view class="form-item">
+                <text class="label">店铺简介</text>
+                <textarea value="{{merchantInfo.description || ''}}" bindinput="onShopDescriptionChange" placeholder="请输入店铺简介" />
+            </view>
+            <view class="form-item">
+                <text class="label">人均消费</text>
+                <input type="number" value="{{merchantInfo.avgPrice || ''}}" bindinput="onShopPriceChange" placeholder="人均消费" />
+            </view>
+            <view class="form-item">
+                <text class="label">营业时间</text>
+                <input value="{{merchantInfo.businessHours || ''}}" bindinput="onShopHoursChange" placeholder="营业时间" />
+            </view>
+            <view class="form-item">
+                <text class="label">联系电话</text>
+                <input value="{{merchantInfo.phone || ''}}" bindinput="onShopPhoneChange" placeholder="联系电话" />
+            </view>
+            <view class="form-item">
+                <text class="label">店铺地址</text>
+                <input value="{{merchantInfo.floor || ''}}" bindinput="onShopfloorChange" placeholder="店铺地址" />
+            </view>
+            <view class="form-item">
+                <text class="label">店铺公告</text>
+                <textarea value="{{merchantInfo.announcement || ''}}" bindinput="onAnnouncementChange" placeholder="店铺公告" />
+            </view>
+            <button class="save-btn" bindtap="onSaveShop">保存设置</button>
+        </view>
+    </view> 
+
+    <!-- 排队管理（独立content，与首页同级） -->
+    <view wx:if="{{activeTab==='queue'}}" class="content">
+        <view class="queue-controls">
+            <button wx:if="{{queueView === 'waiting'}}" class="control-btn primary" bindtap="onCallNext">叫号</button>
+            <button class="control-btn finish" bindtap="onFinish">{{queueView === 'waiting' ? '已完成' : '返回'}}</button>
+            <button class="control-btn warn" bindtap="onClearQueue">清空</button>
+        </view>
+        <view class="queue-list">
+            <!-- 等待中视图 -->
+            <block wx:if="{{queueView === 'waiting' && queue.length}}">
+                <block wx:for="{{queue}}" wx:key="id" wx:if="{{item.status === 'waiting'}}">
+                    <view class="queue-item">
+                        <view class="queue-header">
+                            <view class="queue-info">
+                                <text class="queue-number">{{item.queueNumber}} 号</text>
+                                <view class="queue-details">
+                                    <text class="queue-party">{{item.partySize}} 人</text>
+                                    <text class="queue-time">{{item.createTime}}</text>
+                                </view>
+                            </view>
+                        </view>
+                        <!-- 新增：订单菜品渲染模块 -->
+                        <view wx:if="{{item.order}}" class="order-items">
+                            <text class="order-label">我的订单</text>
+                            <view class="items-list">
+                                <block wx:for="{{item.order.items}}" wx:key="dishId" wx:for-item="orderItem">
+                                    <view class="item-row">
+                                        <text class="item-name">{{orderItem.dishName || orderItem.name}} x{{orderItem.quantity}}</text>
+                                        <text class="item-price">¥{{orderItem.price * orderItem.quantity}}</text>
+                                    </view>
+                                </block>
+                            </view>
+                            <view class="order-total">
+                                <text class="total-label">总计：</text>
+                                <text class="total-price">¥{{item.order.totalPrice}}</text>
+                            </view>
+                        </view>
+
+                        <view class="queue-actions">
+                            <button size="mini" type="warn" bindtap="onMarkOverdue" data-id="{{item._id}}">过号</button>
+                        </view>
+                    </view>
+                </block>
+                <!-- 当没有waiting状态的排队记录时显示 -->
+                <view wx:if="{{waitingCount === 0}}" class="empty-state">
+                    <text class="empty-text">当前无等待中排队</text>
+                </view>
+            </block>
+
+            <!-- 已完成视图（显示非waiting状态的记录） -->
+            <block wx:if="{{queueView === 'completed' && queue.length}}">
+                <block wx:for="{{queue}}" wx:key="id" wx:if="{{item.status !== 'waiting'}}">
+                    <view class="queue-item">
+                        <view class="queue-header">
+                            <view class="queue-info">
+                                <text class="queue-number">{{item.queueNumber}} 号</text>
+                                <view class="queue-details">
+                                    <text class="queue-party">{{item.partySize}} 人</text>
+                                    <text class="queue-time">{{item.createTime}}</text>
+                                    <text class="queue-status {{item.status === 'called' ? 'called' : 'expired'}}">
+                                        {{item.status === 'called' ? '已叫号' : '已过期'}}
+                                    </text>
+                                </view>
+                            </view>
+                        </view>
+                        <!-- 订单菜品渲染模块 -->
+                        <view wx:if="{{item.order}}" class="order-items">
+                            <text class="order-label">我的订单</text>
+                            <view class="items-list">
+                                <block wx:for="{{item.order.items}}" wx:key="dishId" wx:for-item="orderItem">
+                                    <view class="item-row">
+                                        <text class="item-name">{{orderItem.dishName || orderItem.name}} x{{orderItem.quantity}}</text>
+                                        <text class="item-price">¥{{orderItem.price * orderItem.quantity}}</text>
+                                    </view>
+                                </block>
+                            </view>
+                            <view class="order-total">
+                                <text class="total-label">总计：</text>
+                                <text class="total-price">¥{{item.order.totalPrice}}</text>
+                            </view>
+                        </view>
+                    </view>
+                </block>
+                <!-- 当没有已完成状态的排队记录时显示 -->
+                <view wx:if="{{completedCount === 0}}" class="empty-state">
+                    <text class="empty-text">当前无已完成排队</text>
+                </view>
+            </block>
+
+            <!-- 通用空状态 -->
+            <view wx:elif="{{queue.length === 0}}" class="empty-state">
+                <text class="empty-text">当前无排队</text>
+            </view>
+        </view>
+    </view>
+
+    <!-- 订单管理（独立content） -->
+    <view wx:if="{{activeTab==='orders'}}" class="content">
+        <!-- 预约控制按钮 -->
+        <view class="order-controls">
+            <button class="control-btn primary" bindtap="onShowAllOrders">全部</button>
+            <button class="control-btn warn" bindtap="onClearCompletedOrders">清空</button>
+        </view>
+
+        <view class="order-list">
+            <block wx:for="{{orders}}" wx:key="id">
+                <view class="order-item">
+                    <view class="order-header">
+                        <text class="order-no">票据：{{item.orderNo}}</text>
+                        <text class="order-status {{item.status}}">{{item.status==='reserved'?'已预约':item.status==='called'?'已完成':item.status==='expired'?'已过期':'已取消'}}</text>
+                    </view>
+                    <!-- 显示预约时间和人数 -->
+                    <view class="reserve-info">
+                        <text class="reserve-time">预约时间：{{item.reserveTime}}</text>
+                        <text class="party-size">预约人数：{{item.partySize || 1}}人</text>
+                    </view>
+
+                    <!-- 修改为已完成和已过期按钮 -->
+                    <view class="order-actions">
+                        <button wx:if="{{item.status==='reserved'}}" size="mini" type="primary" bindtap="onMarkOrderCompleted" data-id="{{item.id}}">已完成</button>
+                        <button wx:if="{{item.status==='reserved'}}" size="mini" type="warn" bindtap="onMarkOrderExpired" data-id="{{item.id}}">已过期</button>
+                    </view>
+                </view>
+            </block>
+            <!-- 空状态显示 -->
+            <view wx:if="{{orders.length === 0}}" class="empty-state">
+                <text class="empty-text">当前无预约订单</text>
+            </view>
+        </view>
+    </view> 
+
+    <!-- 菜品管理（独立content） -->
+    <view wx:if="{{activeTab==='dishes'}}" class="content">
+       <view class="dish-actions">
+            <button class="add-dish-btn" bindtap="onAddDish">添加菜品</button>
+        </view>
+
+        <view class="dish-list">
+            <block wx:if="{{dishes.length > 0}}">
+                <view class="list-title">已审核菜品</view>
+                <block wx:for="{{dishes}}" wx:key="id">
+                    <view class="dish-item">
+                        <image src="{{item.menuItems.image}}" class="dish-image" />
+                        <view class="dish-info">
+                            <text class="dish-name">{{item.menuItems.name}}</text>
+                            <view><text class="dish-price">¥{{item.menuItems.price}}</text></view>
+                            <!-- 注意：你的数据中没有sales字段，这里如果需要展示可以先处理一下，比如默认值 -->
+                            <text class="dish-sales">销量 {{item.menuItems.sales || 0}}</text>
+                        </view>
+                        <view class="dish-actions">
+                            <button class="dish-actions-xia" size="mini" bindtap="onRemoveDish" data-id="{{item._id}}">下架</button>
+                        </view>
+                    </view>
+                </block>
+            </block>
+
+            <!-- 待审核菜品列表 -->
+            <block wx:if="{{pendingDishes.length > 0}}">
+                <view class="list-title">待审核菜品</view>
+                <block wx:for="{{pendingDishes}}" wx:key="_id">
+                    <view class="dish-item pending">
+                        <image src="{{item.dishImage}}" class="dish-image" />
+                        <view class="dish-info">
+                            <text class="dish-name">{{item.dishName}}</text>
+                            <view><text class="dish-price">¥{{item.price}}</text></view>
+                            <text class="dish-status pending-badge">待审核</text>
+                        </view>
+                        <view class="dish-actions">
+                            <!-- 待审核菜品不需要下架按钮 -->
+                        </view>
+                    </view>
+                </block>
+            </block>
+
+            <!-- 无菜品时的空状态 -->
+            <view wx:if="{{dishes.length === 0 && pendingDishes.length === 0}}" class="empty-state">
+                <text class="empty-text">暂无菜品，请添加</text>
+            </view>
+        </view>
+    </view>
+
+    <!-- 数据分析（独立content） -->
+    <view wx:if="{{activeTab==='data'}}" class="content">
+        <view class="data-filter">
+            <view class="filter-item {{currentStatsFilter === 'today' ? 'active' : ''}}" data-filter="today" bindtap="onStatsFilterChange">
+                今日
+            </view>
+            <view class="filter-item {{currentStatsFilter === 'week' ? 'active' : ''}}" data-filter="week" bindtap="onStatsFilterChange">
+                本周
+            </view>
+            <view class="filter-item {{currentStatsFilter === 'month' ? 'active' : ''}}" data-filter="month" bindtap="onStatsFilterChange">
+                本月
+            </view>
+        </view>
+
+        <view class="stats-overview">
+            <view class="stat-card">
+                <text class="stat-value">{{stats.todayCustomers}}</text>
+                <text class="stat-label">客流</text>
+            </view>
+            <view class="stat-card">
+                <text class="stat-value">¥{{todayRevenue}}</text>
+                <text class="stat-label">营收</text>
+            </view>
+        </view>
+
+        <view class="section">
+            <view class="section-title">热门菜品</view>
+            <view class="popular-dishes">
+                <block wx:for="{{stats.popularDishes}}" wx:key="name">
+                    <view class="dish-rank">
+                        <text class="rank">{{index + 1}}</text>
+                        <text class="dish-name">{{item.name}}</text>
+                        <text class="dish-sales">{{item.sales}}份</text>
+                    </view>
+                </block>
+            </view>
+        </view>
+    </view>
+</view>

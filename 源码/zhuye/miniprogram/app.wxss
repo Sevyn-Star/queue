@@ -1,0 +1,80 @@
+@import './static/css/font.wxss';
+
+page {
+  --brand: #ff6b35;
+  --brand-dark: #e85a28;
+  --brand-soft: #fff1ea;
+  --ink: #2b2118;
+  --muted: #8a7d72;
+  --line: #efe7df;
+  --bg: #f6f1ea;
+  --card: #ffffff;
+  background-color: var(--bg);
+  color: var(--ink);
+  font-family: -apple-system, BlinkMacSystemFont, 'PingFang SC', 'Helvetica Neue', sans-serif;
+}
+
+.page,
+.container,
+.restaurant-detail,
+.register-container,
+.pending-container {
+  animation: fadeUp 0.38s ease-out;
+}
+
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(18rpx);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.tap-scale {
+  transition: transform 0.18s ease, opacity 0.18s ease, box-shadow 0.18s ease;
+}
+
+.tap-scale:active {
+  transform: scale(0.97);
+  opacity: 0.92;
+}
+
+button {
+  font-family: inherit;
+}
+
+button::after {
+  border: none;
+}
+
+.search-bar {
+  background: transparent;
+  padding: 20rpx 28rpx 8rpx;
+  box-shadow: none;
+}
+
+.search-input {
+  display: flex;
+  align-items: center;
+  background: #fff;
+  border-radius: 999rpx;
+  padding: 16rpx 28rpx;
+  box-shadow: 0 8rpx 28rpx rgba(43, 33, 24, 0.06);
+}
+
+.search-input input {
+  flex: 1;
+  font-size: 28rpx;
+  border: none;
+  background: transparent;
+  color: var(--ink);
+}
+
+.search-icon {
+  font-size: 30rpx;
+  color: var(--brand);
+  margin-left: 8rpx;
+}

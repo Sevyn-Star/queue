@@ -1,0 +1,363 @@
+/* 餐厅详情页面样式 */
+.restaurant-detail {
+  background-color: #f6f1ea;
+  min-height: 100vh;
+  padding-bottom: 160rpx;
+}
+
+.loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  font-size: 32rpx;
+  color: #666;
+}
+
+/* 头部背景 */
+.header {
+  position: relative;
+  height: 420rpx;
+}
+
+.header-bg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.back-btn {
+  position: absolute;
+  top: 50rpx;
+  left: 30rpx;
+  width: 80rpx;
+  height: 80rpx;
+  background-color: rgba(0, 0, 0, 0.3);
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  font-size: 48rpx;
+}
+
+.action-btns {
+  position: absolute;
+  top: 50rpx;
+  right: 30rpx;
+  display: flex;
+  gap: 30rpx;
+}
+
+.action-btn {
+  padding: 20rpx 30rpx;
+  background-color: rgba(0, 0, 0, 0.3);
+  border-radius: 40rpx;
+  color: white;
+  font-size: 28rpx;
+}
+
+/* 基本信息 */
+.info-section {
+  background-color: white;
+  padding: 32rpx;
+  margin-top: -80rpx;
+  margin: -80rpx 24rpx 20rpx;
+  border-radius: 28rpx;
+  display: flex;
+  gap: 24rpx;
+  box-shadow: 0 12rpx 32rpx rgba(43, 33, 24, 0.08);
+  position: relative;
+  z-index: 2;
+}
+
+.restaurant-logo-wrapper {
+  position: relative;
+}
+
+.restaurant-logo {
+  width: 180rpx;
+  height: 180rpx;
+  border-radius: 20rpx;
+  border: 5rpx solid white;
+  box-shadow: 0 0 20rpx rgba(0, 0, 0, 0.1);
+}
+
+.restaurant-basic {
+  flex: 1;
+  margin-top: 8rpx;
+}
+
+.restaurant-name {
+  display: block;
+  font-size: 40rpx;
+  font-weight: bold;
+  margin-bottom: 10rpx;
+}
+
+.rating-wrapper {
+  display: flex;
+  gap: 30rpx;
+  margin-bottom: 15rpx;
+}
+
+.rating {
+  font-size: 28rpx;
+  color: #ff6b35;
+}
+
+.price {
+  font-size: 28rpx;
+  color: #666;
+}
+
+.tags-wrapper {
+  display: flex;
+  flex-wrap: wrap;
+  border-top: none;
+  gap: 10rpx;
+  margin-bottom: 15rpx;
+}
+
+.tag {
+  font-size: 24rpx;
+  padding: 5rpx 15rpx;
+  background-color: #fff1ea;
+  border-radius: 20rpx;
+  color: #ff6b35;
+}
+
+.address {
+  font-size: 26rpx;
+  color: #999;
+}
+
+/* 状态信息 */
+.status-section {
+  background-color: white;
+  padding: 30rpx;
+  margin: 0 24rpx 20rpx;
+  border-radius: 24rpx;
+}
+
+.status-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 20rpx 0;
+  border-bottom: 1rpx solid #f0f0f0;
+}
+
+.status-item:last-child {
+  border-bottom: none;
+}
+
+.status-label {
+  font-size: 28rpx;
+  color: #666;
+}
+
+.status-value {
+  font-size: 28rpx;
+  color: #2b2118;
+  font-weight: 600;
+}
+
+.queue-count {
+  color: #ff6b35;
+  font-weight: bold;
+}
+
+/* 通用section样式 */
+.desc-section,
+.menu-section,
+.reviews-section {
+  background-color: white;
+  padding: 30rpx;
+  margin: 0 24rpx 20rpx;
+  border-radius: 24rpx;
+}
+
+.section-title {
+  font-size: 34rpx;
+  font-weight: bold;
+  margin-bottom: 25rpx;
+  color: #333;
+}
+
+/* 餐厅介绍 */
+.description {
+  font-size: 28rpx;
+  line-height: 44rpx;
+  color: #666;
+}
+
+/* 菜单部分 */
+.dish-scroll {
+  margin-bottom: 20rpx;
+}
+
+.dish-list {
+  display: flex;
+  gap: 20rpx;
+  padding-bottom: 10rpx;
+}
+
+.dish-item {
+  width: 220rpx;
+  flex-shrink: 0;
+}
+
+.dish-image {
+  width: 220rpx;
+  height: 220rpx;
+  border-radius: 15rpx;
+  margin-bottom: 15rpx;
+}
+
+.dish-name {
+  display: block;
+  font-size: 28rpx;
+  color: #333;
+  margin-bottom: 8rpx;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.dish-price {
+  font-size: 28rpx;
+  color: #ff6b35;
+  font-weight: bold;
+}
+
+.view-menu-btn {
+  text-align: center;
+  font-size: 28rpx;
+  color: #ff6b35;
+  padding: 15rpx 0;
+}
+
+/* 评价部分 */
+.review-item {
+  padding: 25rpx 0;
+  border-bottom: 1rpx solid #f0f0f0;
+}
+
+.review-item:last-child {
+  border-bottom: none;
+}
+
+.review-header {
+  display: flex;
+  align-items: center;
+  gap: 15rpx;
+  margin-bottom: 15rpx;
+}
+
+.user-avatar {
+  width: 60rpx;
+  height: 60rpx;
+  border-radius: 50%;
+}
+
+.review-user {
+  flex: 1;
+}
+
+.user-name {
+  display: block;
+  font-size: 28rpx;
+  color: #333;
+  margin-bottom: 5rpx;
+}
+
+.review-rating {
+  font-size: 24rpx;
+  color: #ff6b35;
+}
+
+.review-time {
+  font-size: 24rpx;
+  color: #999;
+}
+
+.review-content {
+  font-size: 28rpx;
+  line-height: 44rpx;
+  color: #666;
+}
+
+/* 底部操作栏 */
+.bottom-bar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: white;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20rpx 30rpx;
+  box-shadow: 0 -2rpx 20rpx rgba(0, 0, 0, 0.1);
+  z-index: 999;
+}
+
+.action-left {
+  display: flex;
+  gap: 40rpx;
+}
+
+.action-icon {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5rpx;
+}
+
+.action-icon .icon {
+  font-size: 40rpx;
+}
+
+.action-icon text:last-child {
+  font-size: 24rpx;
+  color: #666;
+}
+
+.action-right {
+  display: flex;
+  gap: 20rpx;
+}
+
+.action-btn {
+  padding: 20rpx 40rpx;
+  font-size: 28rpx;
+  border-radius: 40rpx;
+  line-height: normal;
+}
+
+.action-btn.primary {
+  background: linear-gradient(135deg, #ff7a45, #ff6b35);
+  color: white;
+  border: none;
+  box-shadow: 0 8rpx 20rpx rgba(255, 107, 53, 0.25);
+}
+
+.action-btn.secondary {
+  background-color: #fff;
+  color: #ff6b35;
+  border: 2rpx solid #ff6b35;
+}
+
+/* 按钮样式覆盖 */
+button {
+  background-color: transparent;
+  border: none;
+  padding: 0;
+  margin: 0;
+  min-height: 80rpx;
+  line-height: 80rpx;
+}
+
+button::after {
+  border: none;
+}

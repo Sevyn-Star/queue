@@ -1,0 +1,17 @@
+<!-- 顶部搜索栏 -->
+<view class="search-bar">
+    <view class="search-input">
+        <input placeholder="搜索餐厅、菜品" value="{{searchValue}}" bindinput="onSearchInput" bindconfirm="onSearch" />
+        <view class="search-icon" bindtap="onSearch">🔍</view>
+    </view>
+</view>
+<!-- 搜索结果如下 -->
+<view wx:if="{{list && list.length>0}}">
+    <view style="margin-top: 15rpx;">搜素结果如下：</view>
+    <view wx:for="{{list}}" wx:key="id" bind:tap="skip" data-id="{{item._id}}">
+        <view class="history">
+            <view>餐馆：{{item.name}}</view>
+            <view>标签：{{item.tagsText}}</view>
+        </view>
+    </view>
+</view>

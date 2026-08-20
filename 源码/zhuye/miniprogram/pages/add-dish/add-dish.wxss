@@ -1,0 +1,212 @@
+/* pages/add-dish/add-dish.wxss */
+.page {
+  background-color: #f6f1ea;
+  min-height: 100vh;
+}
+
+/* .header {
+  background-color: #fff;
+  padding: 44rpx 30rpx;
+  box-shadow: 0 2rpx 10rpx rgba(0, 0, 0, 0.1);
+  text-align: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+} */
+
+.title {
+  font-size: 36rpx;
+  font-weight: 600;
+  color: #333;
+}
+
+.content {
+  padding: 60rpx 30rpx 60rpx;
+}
+
+.form-section {
+  background-color: #fff;
+  border-radius: 16rpx;
+  padding: 30rpx;
+  margin-bottom: 30rpx;
+  box-shadow: 0 2rpx 10rpx rgba(0, 0, 0, 0.05);
+}
+
+.section-title {
+  font-size: 32rpx;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 24rpx;
+}
+
+/* 图片上传样式 */
+.image-upload {
+  display: flex;
+  justify-content: center;
+}
+
+.image-preview {
+  width: 280rpx;
+  height: 280rpx;
+  border-radius: 12rpx;
+  overflow: hidden;
+  background-color: #f0f0f0;
+}
+
+.image-preview image {
+  width: 100%;
+  height: 100%;
+}
+
+.upload-btn {
+  width: 280rpx;
+  height: 280rpx;
+  border: 2rpx dashed #ddd;
+  border-radius: 12rpx;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: #fafafa;
+}
+
+.upload-icon {
+  font-size: 80rpx;
+  color: #999;
+  margin-bottom: 16rpx;
+}
+
+.upload-text {
+  font-size: 28rpx;
+  color: #999;
+}
+
+/* 表单样式 */
+.form-item {
+  margin-bottom: 30rpx;
+}
+
+.form-item:last-child {
+  margin-bottom: 0;
+}
+
+.label {
+  display: block;
+  font-size: 28rpx;
+  color: #666;
+  margin-bottom: 16rpx;
+}
+
+.required {
+  color: #e64340;
+}
+
+input, textarea {
+  width: 100%;
+  padding: 28rpx 24rpx;
+  border: 2rpx solid #e0e0e0;
+  border-radius: 8rpx;
+  font-size: 28rpx;
+  color: #333;
+  box-sizing: border-box;
+  background-color: #fff;
+  min-height: 90rpx;
+}
+
+textarea {
+  height: 200rpx;
+  resize: none;
+  font-family: inherit;
+  line-height: 1.5;
+  min-height: 200rpx;
+}
+
+input:focus, textarea:focus {
+  border-color: #1989fa;
+  outline: none;
+}
+
+/* 为placeholder添加明显的字体颜色 */
+input::placeholder,
+textarea::placeholder {
+  color: #666666;
+  font-size: 28rpx;
+  opacity: 1;
+}
+
+/* 适配iOS平台 */
+input::-webkit-input-placeholder,
+textarea::-webkit-input-placeholder {
+  color: #666666 !important;
+  font-size: 28rpx;
+  opacity: 1 !important;
+}
+
+/* 适配Android平台 */
+input:-moz-placeholder,
+textarea:-moz-placeholder {
+  color: #666666 !important;
+  font-size: 28rpx;
+  opacity: 1 !important;
+}
+input::-moz-placeholder,
+textarea::-moz-placeholder {
+  color: #666666 !important;
+  font-size: 28rpx;
+  opacity: 1 !important;
+}
+input:-ms-input-placeholder,
+textarea:-ms-input-placeholder {
+  color: #666666 !important;
+  font-size: 28rpx;
+  opacity: 1 !important;
+}
+
+/* 选择器样式 */
+.picker {
+  width: 100%;
+  padding: 20rpx 24rpx;
+  border: 2rpx solid #e0e0e0;
+  border-radius: 8rpx;
+  font-size: 28rpx;
+  color: #333;
+  box-sizing: border-box;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #fff;
+}
+
+.picker-arrow {
+  font-size: 24rpx;
+  color: #999;
+}
+
+/* 提交按钮 */
+.submit-section {
+  padding: 20rpx 0;
+}
+
+.submit-btn {
+  font-size: 32rpx;
+  font-weight: 600;
+  background-color: #1989fa;
+  color: #fff;
+  border-radius: 8rpx;
+  padding: 24rpx 0;
+  margin: 0;
+}
+
+.submit-btn:active {
+  opacity: 0.8;
+}
+
+/* 适配不同屏幕 */
+@media (min-width: 768px) {
+  .content {
+    max-width: 800rpx;
+    margin: 0 auto;
+  }
+}

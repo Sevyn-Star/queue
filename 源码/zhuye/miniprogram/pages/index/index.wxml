@@ -1,0 +1,81 @@
+<view class="page">
+	<!-- 顶部搜索栏 -->
+	<view class="search-bar">
+		<view class="search-input">
+			<input placeholder="搜索餐厅、菜品" bind:tap="onSearch" />
+			<view class="search-icon" bindtap="onSearch">🔍</view>
+		</view>
+	</view>
+
+	<!-- 快捷入口 -->
+	<view class="quick-entries">
+		<view class="entry-btn tap-scale" hover-class="tap-scale" bindtap="onQuickQueue">
+			<view class="entry-icon">📝</view>
+			<text>快速取号</text>
+		</view>
+		<view class="entry-btn tap-scale" hover-class="tap-scale" bindtap="onQuickReserve">
+			<view class="entry-icon">📅</view>
+			<text>立即预约</text>
+		</view>
+	</view>
+
+	<!-- 轮播图 -->
+	<view class="banner-section">
+		<swiper autoplay interval="3000" circular indicator-dots indicator-color="rgba(255,255,255,0.5)" indicator-active-color="#ff6b35">
+			<block wx:for="{{banners}}" wx:key="id">
+				<swiper-item bindtap="onBannerTap" data-id="{{item.id}}">
+					<image mode="scaleToFill" src="{{item.image}}" class="banner-img" />
+					<view class="banner-title">{{item.title}}</view>
+				</swiper-item>
+			</block>
+		</swiper>
+	</view>
+
+	<!-- 热门餐厅 -->
+	<view class="section">
+		<view class="section-header">
+			<text class="section-title">热门餐厅</text>
+			<text class="more-btn">更多 ></text>
+		</view>
+		<scroll-view scroll-x class="restaurant-scroll">
+			<view class="restaurant-list">
+				<block wx:for="{{hotRestaurants}}" wx:key="id">
+					<view class="restaurant-card tap-scale" hover-class="tap-scale" bindtap="onRestaurantTap" data-id="{{item._id}}">
+						<image src="{{item.logo}}" class="restaurant-logo" />
+						<view class="restaurant-info">
+							<text class="restaurant-name">{{item.name}}</text>
+							<view class="restaurant-rating">
+								<text class="rating">⭐ {{item.rating}}</text>
+								<text class="price">¥{{item.avgPrice}}</text>
+							</view>
+							<view class="restaurant-tags">
+								<text class="tag" wx:for="{{item.tags}}" wx:key="*this" wx:for-item="tag">{{tag}}</text>
+							</view>
+						</view>
+					</view>
+				</block>
+			</view>
+		</scroll-view>
+	</view>
+
+	<!-- 排队概览 -->
+	<view class="section">
+		<view class="section-header">
+			<text class="section-title">位置概览</text>
+		</view>
+		<view class="queue-overview">
+			<block wx:for="{{queueOverview}}" wx:key="floor">
+				<view class="floor-section">
+					<text class="floor-title">{{item.floor}}</text>
+					<view class="floor-restaurants">
+						<block wx:for="{{item.restaurants}}" wx:key="name" wx:for-item="restaurant">
+							<view class="queue-item">
+								<text class="restaurant-name">{{restaurant.name}}</text>
+							</view>
+						</block>
+					</view>
+				</view>
+			</block>
+		</view>
+	</view>
+</view>

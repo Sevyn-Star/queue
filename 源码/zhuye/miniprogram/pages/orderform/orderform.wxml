@@ -1,0 +1,231 @@
+<view class="page">
+    <!-- <view class="custom-back" bindtap="goBack">返回</view> -->
+    <!-- 顶部搜索栏 -->
+    <view class="search-bar">
+        <view class="search-input">
+            <input placeholder="搜索餐厅、菜品" bind:tap="onSearch" />
+            <view class="search-icon" bindtap="onSearch">🔍</view>
+        </view>
+    </view>
+
+    <!-- Tab导航 -->
+    <view class="tabs">
+        <view class="tab {{activeTab==='queue'?'active':''}}" data-key="queue" bindtap="onTabChange">
+            <text>排队取号</text>
+        </view>
+        <view class="tab {{activeTab==='reserve'?'active':''}}" data-key="reserve" bindtap="onTabChange">
+            <text>预约</text>
+        </view>
+        <view class="tab {{activeTab==='order'?'active':''}}" data-key="order" bindtap="onTabChange">
+            <text>点餐</text>
+        </view>
+        <view class="tab {{activeTab==='mine'?'active':''}}" data-key="mine" bindtap="onTabChange">
+            <text>我的排队</text>
+        </view>
+    </view>
+
+    <!-- 排队取号 -->
+    <view wx:if="{{activeTab==='queue'}}" class="content">
+        <view class="section">
+            <view class="section-title">选择餐厅</view>
+            <picker mode="selector" range="{{restaurants}}" range-key="name" bindchange="onRestaurantPick">
+                <view class="picker-item">
+                    <text class="picker-text">{{selectedRestaurantName || '请选择餐厅'}}</text>
+                    <text class="picker-arrow">></text>
+                </view>
+            </picker>
+        </view>
+
+        <view class="section">
+            <view class="section-title">请选择用餐人数</view>
+            <view class="section section_gap">
+                <!-- <text class="section__title">设置最小/最大值</text> -->
+                <view class="body-view">
+                    <slider bindchange="onPartySizeChange" min="1" max="8" block-color="#ff6b35" activeColor="#ff6b35" value="{{partySize}}" show-value />
+                </view>
+            </view>
+        </view>
+
+        <view wx:if="{{selectedRestaurantId}}" class="restaurant-info">
+            <view class="restaurant-card">
+                <image src="{{selectedRestaurant.logo}}" class="restaurant-logo" />
+                <view class="restaurant-details">
+                    <text class="restaurant-name">{{selectedRestaurantName}}</text>
+                    <view class="restaurant-meta">
+                        <text class="rating">⭐ {{selectedRestaurant.rating}}</text>
+                        <text class="price">¥{{selectedRestaurant.avgPrice}}</text>
+                        <text class="queue-count">排队 {{selectedRestaurant.queueCount}} 桌</text>
+                    </view>
+                    <text class="wait-time">预计等待 {{selectedRestaurant.waitTime}} 分钟</text>
+                </view>
+            </view>
+        </view>
+
+        <button class="action-btn" type="primary" bindtap="onTakeNumber" disabled="{{!selectedRestaurantId}}">
+            立即取号
+        </button>
+    </view>
+
+    <!-- 预约 -->
+    <view wx:if="{{activeTab==='reserve'}}" class="content">
+        <!-- 新增：预约警示 -->
+        <view class="warning-tip">
+            <text class="tip-text">⚠️ 仅支持预约第二天的时段</text>
+        </view>
+        <view class="section">
+            <view class="section-title">选择餐厅</view>
+            <picker mode="selector" range="{{restaurants}}" range-key="name" bindchange="onRestaurantPick">
+                <view class="picker-item">
+                    <text class="picker-text">{{selectedRestaurantName || '请选择餐厅'}}</text>
+                    <text class="picker-arrow">></text>
+                </view>
+            </picker>
+        </view>
+
+        <!-- 移除日期选择器，仅保留时间选择 -->
+        <view class="section">
+            <view class="section-title">预约时间</view>
+            <picker mode="time" value="{{reserveTime}}" start="10:00" end="22:00" bindchange="onReserveTimeChange">
+                <view class="picker-item">
+                    <text class="picker-text">{{reserveDate}} {{reserveTime || '选择时间'}}</text> <!-- 新增：显示固定日期 -->
+                    <text class="picker-arrow">></text>
+                </view>
+            </picker>
+        </view>
+
+        <view class="section">
+            <view class="section-title">请选择用餐人数</view>
+            <view class="section section_gap">
+                <!-- <text class="section__title">设置最小/最大值</text> -->
+                <view class="body-view">
+                    <slider bindchange="onPartySizeChange" min="1" max="8" block-color="#ff6b35" activeColor="#ff6b35" value="{{partySize}}" show-value />
+                </view>
+            </view>
+        </view>
+
+        <button class="action-btn" type="primary" bindtap="onReserve" disabled="{{!selectedRestaurantId || !reserveTime}}">
+            提交预约
+        </button>
+    </view>
+
+    <!-- 点餐 -->
+    <view wx:if="{{activeTab==='order'}}" class="content">
+        <view class="section">
+            <view class="section-title">选择餐厅</view>
+            <picker mode="selector" range="{{restaurants}}" range-key="name" bindchange="onRestaurantPick">
+                <view class="picker-item">
+                    <text class="picker-text">{{selectedRestaurantName || '请选择餐厅'}}</text>
+                    <text class="picker-arrow">></text>
+                </view>
+            </picker>
+        </view>
+
+        <view wx:if="{{selectedRestaurantId}}" class="menu-section">
+            <view class="section-title">菜品菜单</view>
+            <view class="menu-list">
+                <block wx:for="{{menuItems}}" wx:key="id">
+                    <view class="menu-item">
+                        <image src="{{item.image}}" class="menu-image" />
+                        <view class="menu-info">
+                            <text class="menu-name">{{item.name}}</text>
+                            <text class="menu-desc">{{item.description}}</text>
+                            <text class="menu-price">¥{{item.price}}</text>
+                        </view>
+                        <view class="menu-actions">
+                            <button size="mini" bindtap="onDecreaseQuantity" data-id="{{item.id}}">-</button>
+                            <text class="quantity">{{item.quantity || 0}}</text>
+                            <button size="mini" bindtap="onIncreaseQuantity" data-id="{{item.id}}">+</button>
+                        </view>
+                    </view>
+                </block>
+            </view>
+        </view>
+
+        <view wx:if="{{cartItems.length}}" class="cart-section">
+            <view class="section-title">购物车</view>
+            <view class="cart-list">
+                <block wx:for="{{cartItems}}" wx:key="id">
+                    <view class="cart-item">
+                        <text class="cart-name">{{item.name}}</text>
+                        <text class="cart-quantity">x{{item.quantity}}</text>
+                        <text class="cart-price">¥{{item.price * item.quantity}}</text>
+                    </view>
+                </block>
+            </view>
+            <view class="cart-total">
+                <text class="total-label">总计：</text>
+                <text class="total-price">¥{{cartTotal}}</text>
+            </view>
+            <button class="order-btn" type="primary" bindtap="onSubmitOrder">提交订单</button>
+        </view>
+    </view>
+
+    <!-- 我的排队 -->
+    <view wx:if="{{activeTab==='mine'}}" class="content">
+        <block wx:if="{{myTickets.length}}">
+            <block wx:for="{{myTickets}}" wx:key="id">
+                <view class="ticket-card">
+                    <view class="ticket-header">
+                        <text class="restaurant-name">{{item.restaurantName}}</text>
+                        <text class="status {{item.status}}">{{item.statusText}}</text>
+                    </view>
+
+                    <view wx:if="{{item.type==='queue'}}" class="queue-info">
+                        <view class="queue-number">
+                            <text class="number-label">号牌</text>
+                            <text class="number-value">{{item.number}}</text>
+                        </view>
+                        <view class="queue-progress">
+                            <text class="progress-label">当前叫号</text>
+                            <text class="progress-value">{{item.currentNumber}}</text>
+                        </view>
+                        <view class="queue-eta">
+                            <text class="eta-label">预计等待</text>
+                            <text class="eta-value">{{item.estimatedTime}} 分钟</text>
+                        </view>
+                    </view>
+
+                    <view wx:if="{{item.type==='reserve'}}" class="reserve-info">
+                        <view class="reserve-time">
+                            <text class="time-label">票据：{{item.ticketsId}}</text>
+                            <!-- <text class="time-label">预约时间</text> -->
+                            <text class="time-value">预约时间：{{item.reserveTime}}</text>
+                        </view>
+                    </view>
+                    <!-- 新增：订单菜品渲染 -->
+                    <view wx:if="{{item.order}}" class="order-items">
+                        <text class="order-label">我的订单</text>
+                        <view class="items-list">
+                            <block wx:for="{{item.order.items}}" wx:key="id">
+                                <view class="item-row">
+                                    <text class="item-name">{{item.name}} x{{item.quantity}}</text>
+                                    <text class="item-price">¥{{item.price * item.quantity}}</text>
+                                </view>
+                            </block>
+                            <view class="order-total">
+                                <text class="total-label">总计：</text>
+                                <text class="total-price">¥{{item.order.totalPrice}}</text>
+                            </view>
+                        </view>
+                    </view>
+                    <view class="ticket-meta">
+                        <text class="party-size">{{item.partySize}} 人</text>
+                        <text class="create-time">{{item.createTime}}</text>
+                    </view>
+
+                    <view class="ticket-actions">
+                        <button wx:if="{{item.status==='waiting'}}" size="mini" type="warn" bindtap="onCancel" data-id="{{item.id}}">取消排队</button>
+                        <button wx:if="{{item.status==='waiting'}}" size="mini" type="primary" bindtap="onArrive" data-id="{{item.id}}">我已到店</button>
+                        <button wx:if="{{item.status==='reserved'}}" size="mini" type="warn" bindtap="onCancel" data-id="{{item.id}}">取消预约</button>
+                        <button wx:if="{{item.status==='overdue' || item.status==='expired'}}" size="mini" type="primary" bindtap="onRetakeNumber" data-id="{{item.id}}">重新取号</button>
+                    </view>
+                </view>
+            </block>
+        </block>
+        <view wx:else class="empty-state">
+            <text class="empty-icon">📝</text>
+            <text class="empty-text">暂无排队/预约</text>
+            <button size="mini" type="primary" bindtap="onTabChange" data-key="queue">立即取号</button>
+        </view>
+    </view>
+</view>

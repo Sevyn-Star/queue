@@ -1,0 +1,21 @@
+{
+  "name": "paidui-backend",
+  "version": "1.0.0",
+  "private": true,
+  "description": "商场排队点餐小程序自建后端",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "node src/index.js",
+    "seed": "node src/seed.js",
+    "test": "node src/test-api.js",
+    "dev": "node --watch src/index.js"
+  },
+  "dependencies": {
+    "better-sqlite3": "^11.10.0",
+    "cors": "^2.8.5",
+    "express": "^4.21.2",
+    "jsonwebtoken": "^9.0.2",
+    "multer": "^2.0.1",
+    "uuid": "^11.1.0"
+  }
+}

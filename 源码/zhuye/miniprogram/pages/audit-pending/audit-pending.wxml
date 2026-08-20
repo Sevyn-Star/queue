@@ -1,0 +1,11 @@
+<view class="pending-container">
+  <view class="pending-icon">⌛</view>
+  <view class="pending-title">{{title}}</view>
+  <view class="pending-desc">{{desc}}</view>
+  <view class="pending-meta" wx:if="{{shopName}}">店铺：{{shopName}}</view>
+  <view class="pending-meta" wx:if="{{applyTime}}">提交时间：{{applyTime}}</view>
+  <view class="pending-actions">
+    <button class="pending-btn primary" bindtap="refreshStatus">刷新状态</button>
+    <button class="pending-btn" bindtap="goHome">返回首页</button>
+  </view>
+</view>

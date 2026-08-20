@@ -1,0 +1,15 @@
+# 依赖
+node_modules/
+
+# 密钥与本地环境
+backend/.env
+
+# 运行时生成（可用 npm run seed 从「存储数据」重建）
+backend/data/
+backend/uploads/
+
+# 系统与工具
+.DS_Store
+*.log
+.idea/
+.vscode/

@@ -1,0 +1,18 @@
+.history {
+  margin: 20rpx 28rpx;
+  border: none;
+  background-color: #fff;
+  border-radius: 24rpx;
+  color: #2b2118;
+  padding: 28rpx;
+  box-shadow: 0 8rpx 24rpx rgba(43, 33, 24, 0.05);
+}
+
+.history view {
+  line-height: 1.7;
+  font-size: 28rpx;
+}
+
+.search-bar {
+  padding: 16rpx 28rpx;
+}

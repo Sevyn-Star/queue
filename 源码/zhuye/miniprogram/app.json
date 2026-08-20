@@ -1,0 +1,56 @@
+{
+  "pages": [
+    "pages/search/search",
+    "pages/index/index",
+    "pages/restaurant/restaurant",
+    "pages/my/my",
+    "pages/orderform/orderform",
+    "pages/admin/admin",
+    "pages/publish-announcement/publish-announcement",
+    "pages/merchant/merchant",
+    "pages/add-dish/add-dish",
+    "pages/register/register",
+    "pages/audit-pending/audit-pending"
+  ],
+  "entryPagePath": "pages/index/index",
+  "window": {
+    "backgroundColor": "#F6F1EA",
+    "backgroundTextStyle": "light",
+    "navigationBarBackgroundColor": "#F6F1EA",
+    "navigationBarTextStyle": "black"
+  },
+  "tabBar": {
+    "color": "#8A7D72",
+    "selectedColor": "#ff6b35",
+    "backgroundColor": "#ffffff",
+    "borderStyle": "white",
+    "position": "bottom",
+    "list": [
+      {
+        "pagePath": "pages/index/index",
+        "text": "首页",
+        "iconPath": "image/navigation/food.png",
+        "selectedIconPath": "image/navigation/food_select.png"
+      },
+      {
+        "pagePath": "pages/orderform/orderform",
+        "text": "排队",
+        "iconPath": "image/navigation/orderform.png",
+        "selectedIconPath": "image/navigation/orderform_select.png"
+      },
+      {
+        "pagePath": "pages/my/my",
+        "text": "我的",
+        "iconPath": "image/navigation/my.png",
+        "selectedIconPath": "image/navigation/my_select.png"
+      }
+    ]
+  },
+  "permission": {
+    "scope.userLocation": {
+      "desc": "你的位置信息将用于小程序位置接口的效果展示"
+    }
+  },
+  "sitemapLocation": "sitemap.json",
+  "lazyCodeLoading": "requiredComponents"
+}

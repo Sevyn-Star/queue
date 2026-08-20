@@ -1,0 +1,42 @@
+<view class="page">
+    <view class="one"></view>
+  <view class="header">
+    <view class="header-left" bindtap="onBack">
+      <text class="back-icon">←</text>
+    </view>
+    <view class="header-title">发布公告</view>
+    <view class="header-right"></view>
+  </view>
+
+  <view class="content">
+    <view class="form-item">
+      <text class="form-label">标题</text>
+      <input class="form-input" placeholder="请输入公告标题" value="{{title}}" bindinput="onTitleInput" />
+    </view>
+
+    <view class="form-item">
+      <text class="form-label">活动内容</text>
+      <textarea class="form-textarea" placeholder="请输入活动内容" value="{{content}}" bindinput="onContentInput" />
+    </view>
+
+    <view class="form-item">
+      <text class="form-label">活动照片</text>
+      <view class="upload-area" bindtap="onChooseImage">
+        <image wx:if="{{imageUrl}}" src="{{imageUrl}}" class="preview-image" mode="aspectFit"></image>
+        <view wx:else class="upload-placeholder">
+          <text class="upload-icon">+</text>
+          <text class="upload-text">点击上传照片</text>
+        </view>
+      </view>
+    </view>
+
+    <view class="form-item">
+      <text class="form-label">发布时间</text>
+      <text class="form-time">{{currentDate}}</text>
+    </view>
+
+    <view class="submit-section">
+      <button class="submit-btn" bindtap="onSubmit">完成</button>
+    </view>
+  </view>
+</view>
